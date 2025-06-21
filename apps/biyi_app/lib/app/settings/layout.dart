@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:biyi_app/app/router_config.dart';
-import 'package:biyi_app/generated/locale_keys.g.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -86,14 +86,14 @@ class _SettingsLayoutState extends State<SettingsLayout> with WindowListener {
   }
 
   Widget _buildSidebar(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
+    final DesignThemeData theme = DesignTheme.of(context);
 
     return Container(
       decoration: BoxDecoration(
-        color: themeData.colorScheme.surfaceContainerLow,
+        color: theme.colorScheme.surfaceMuted,
         border: Border(
           right: BorderSide(
-            color: themeData.colorScheme.outlineVariant,
+            color: theme.colorScheme.border!,
           ),
         ),
       ),
@@ -102,67 +102,67 @@ class _SettingsLayoutState extends State<SettingsLayout> with WindowListener {
       ),
       width: 200,
       height: double.infinity,
-      child: NavList(
+      child: SideNavigation(
         children: [
-          NavListSection(
+          SideNavigationSection(
             header: Text(
-              LocaleKeys.app_settings__layout_navgroup_client.tr(),
+              t.app.settings.kLayout.navgroup.client,
             ),
             children: [
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsGeneral,
                 leading: const Icon(FluentIcons.app_generic_20_regular),
-                title: Text(LocaleKeys.app_settings_general_title.tr()),
+                title: Text(t.app.settings.general.title),
                 onTap: () => _handleDestinationSelected(PageId.settingsGeneral),
               ),
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsAppearance,
                 leading: const Icon(FluentIcons.style_guide_20_regular),
-                title: Text(LocaleKeys.app_settings_appearance_title.tr()),
+                title: Text(t.app.settings.appearance.title),
                 onTap: () =>
                     _handleDestinationSelected(PageId.settingsAppearance),
               ),
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsKeybinds,
                 leading: const Icon(FluentIcons.keyboard_20_regular),
-                title: Text(LocaleKeys.app_settings_keybinds_title.tr()),
+                title: Text(t.app.settings.keybinds.title),
                 onTap: () =>
                     _handleDestinationSelected(PageId.settingsKeybinds),
               ),
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsLanguage,
                 leading: const Icon(FluentIcons.local_language_20_regular),
-                title: Text(LocaleKeys.app_settings_language_title.tr()),
+                title: Text(t.app.settings.language.title),
                 onTap: () =>
                     _handleDestinationSelected(PageId.settingsLanguage),
               ),
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsAdvanced,
                 leading: const Icon(FluentIcons.settings_20_regular),
-                title: Text(LocaleKeys.app_settings_advanced_title.tr()),
+                title: Text(t.app.settings.advanced.title),
                 onTap: () =>
                     _handleDestinationSelected(PageId.settingsAdvanced),
               ),
             ],
           ),
-          NavListSection(
+          SideNavigationSection(
             header: Text(
-              LocaleKeys.app_settings__layout_navgroup_integrations.tr(),
+              t.app.settings.kLayout.navgroup.integrations,
             ),
             children: [
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsOcrEngines,
                 leading: const Icon(FluentIcons.scan_20_regular),
-                title: Text(LocaleKeys.app_settings_ocr_engines_title.tr()),
+                title: Text(t.app.settings.ocr_engines.title),
                 onTap: () =>
                     _handleDestinationSelected(PageId.settingsOcrEngines),
               ),
-              NavListItem(
+              SideNavigationItem(
                 selected:
                     _selectedDestination == PageId.settingsTranslationEngines,
                 leading: const Icon(FluentIcons.translate_20_regular),
                 title: Text(
-                  LocaleKeys.app_settings_translation_engines_title.tr(),
+                  t.app.settings.translation_engines.title,
                 ),
                 onTap: () => _handleDestinationSelected(
                   PageId.settingsTranslationEngines,
@@ -170,15 +170,15 @@ class _SettingsLayoutState extends State<SettingsLayout> with WindowListener {
               ),
             ],
           ),
-          NavListSection(
+          SideNavigationSection(
             header: Text(
-              LocaleKeys.app_settings__layout_navgroup_resources.tr(),
+              t.app.settings.kLayout.navgroup.resources,
             ),
             children: [
-              NavListItem(
+              SideNavigationItem(
                 selected: _selectedDestination == PageId.settingsAbout,
                 leading: const Icon(FluentIcons.info_20_regular),
-                title: Text(LocaleKeys.app_settings_about_title.tr()),
+                title: Text(t.app.settings.about.title),
                 onTap: () => _handleDestinationSelected(PageId.settingsAbout),
               ),
             ],
@@ -200,8 +200,8 @@ class _SettingsLayoutState extends State<SettingsLayout> with WindowListener {
       );
     });
 
-    return Scaffold(
-      body: AdaptiveLayout(
+    return PageScaffold(
+      child: AdaptiveLayout(
         primaryNavigation: SlotLayout(
           config: <Breakpoint, SlotLayoutConfig>{
             Breakpoints.large: SlotLayout.from(

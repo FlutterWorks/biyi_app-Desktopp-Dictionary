@@ -1,5 +1,5 @@
 import 'package:biyi_app/app/router_config.dart';
-import 'package:biyi_app/generated/locale_keys.g.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
 import 'package:biyi_app/services/api_client.dart';
 import 'package:biyi_app/services/translate_client/translate_client.dart';
 import 'package:biyi_app/states/settings.dart';
@@ -7,10 +7,8 @@ import 'package:biyi_app/widgets/customized_app_bar/customized_app_bar.dart';
 import 'package:biyi_app/widgets/feature_status_icon/feature_status_icon.dart';
 import 'package:biyi_app/widgets/translation_engine_icon/translation_engine_icon.dart';
 import 'package:biyi_app/widgets/translation_engine_name/translation_engine_name.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:reflect_colors/reflect_colors.dart';
 import 'package:reflect_ui/reflect_ui.dart';
 import 'package:shortid/shortid.dart';
 import 'package:uni_translate_client/uni_translate_client.dart';
@@ -102,13 +100,13 @@ class _TranslationEnginesNewOrEditPageState
     return CustomizedAppBar(
       title: widget.engineConfig != null
           ? TranslationEngineName(widget.engineConfig!)
-          : Text(LocaleKeys.app_translation_engines_new_title.tr()),
+          : Text(t.app.translation_engines_new.title),
       actions: [
         if (widget.editable)
           Button(
             variant: ButtonVariant.filled,
             onPressed: _handleClickOk,
-            child: Text(LocaleKeys.ok.tr()),
+            child: Text(t.ok),
           ),
       ],
     );
@@ -119,14 +117,13 @@ class _TranslationEnginesNewOrEditPageState
       children: [
         ListSection(
           header: Text(
-            LocaleKeys.app_translation_engines_new_engine_type_title.tr(),
+            t.app.translation_engines_new.engine_type.title,
           ),
           children: [
             ListTile(
               leading: _type == null ? null : TranslationEngineIcon(_type!),
-              title: _type == null
-                  ? Text(LocaleKeys.please_choose.tr())
-                  : Text('engine.$_type'.tr()),
+              title:
+                  _type == null ? Text(t.please_choose) : Text('engine.$_type'),
               trailing: widget.editable ? const ListTileChevron() : null,
               onTap: widget.editable
                   ? () async {
@@ -150,8 +147,7 @@ class _TranslationEnginesNewOrEditPageState
           ListSection(
             hasLeading: false,
             header: Text(
-              LocaleKeys.app_translation_engines_new_support_interface_title
-                  .tr(),
+              t.app.translation_engines_new.support_interface.title,
             ),
             children: [
               for (var scope in TranslationEngineScope.values)
@@ -163,7 +159,7 @@ class _TranslationEnginesNewOrEditPageState
                     right: 12,
                   ),
                   title: Text(
-                    'engine_scope.${scope.name.toLowerCase()}'.tr(),
+                    'engine_scope.${scope.name.toLowerCase()}',
                   ),
                   subtitle: Text(scope.name),
                   additionalInfo: FeatureStatusIcon(
@@ -177,7 +173,7 @@ class _TranslationEnginesNewOrEditPageState
           ListSection(
             hasLeading: false,
             header: Text(
-              LocaleKeys.app_translation_engines_new_option_title.tr(),
+              t.app.translation_engines_new.option.title,
             ),
             children: [
               for (var optionKey in _engineOptionKeys)
@@ -204,8 +200,8 @@ class _TranslationEnginesNewOrEditPageState
               ListTile(
                 title: Center(
                   child: Text(
-                    LocaleKeys.delete.tr(),
-                    style: const TextStyle(color: ReflectColors.red),
+                    t.delete,
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ),
                 onTap: () async {
@@ -224,9 +220,9 @@ class _TranslationEnginesNewOrEditPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      body: _buildBody(context),
+    return PageScaffold(
+      navigationBar: _buildAppBar(context),
+      child: _buildBody(context),
     );
   }
 }

@@ -1,16 +1,15 @@
 import 'package:biyi_app/app/router_config.dart';
-import 'package:biyi_app/generated/locale_keys.g.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
 import 'package:biyi_app/services/api_client.dart';
 import 'package:biyi_app/services/ocr_client/ocr_client.dart';
 import 'package:biyi_app/states/settings.dart';
 import 'package:biyi_app/widgets/customized_app_bar/customized_app_bar.dart';
 import 'package:biyi_app/widgets/ocr_engine_icon/ocr_engine_icon.dart';
 import 'package:biyi_app/widgets/ocr_engine_name/ocr_engine_name.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:ocr_engine_youdao/ocr_engine_youdao.dart';
 import 'package:provider/provider.dart';
-import 'package:reflect_colors/reflect_colors.dart';
 import 'package:reflect_ui/reflect_ui.dart';
 import 'package:shortid/shortid.dart';
 
@@ -81,13 +80,13 @@ class _OcrEnginesNewOrEditPageState extends State<OcrEnginesNewOrEditPage> {
     return CustomizedAppBar(
       title: widget.ocrEngineConfig != null
           ? OcrEngineName(widget.ocrEngineConfig!)
-          : Text(LocaleKeys.app_ocr_engines_new_title.tr()),
+          : Text(t.app.ocr_engines_new.title),
       actions: [
         if (widget.editable)
           Button(
             variant: ButtonVariant.filled,
             onPressed: _handleClickOk,
-            child: Text(LocaleKeys.ok.tr()),
+            child: Text(t.ok),
           ),
       ],
     );
@@ -98,14 +97,14 @@ class _OcrEnginesNewOrEditPageState extends State<OcrEnginesNewOrEditPage> {
       children: [
         ListSection(
           header: Text(
-            LocaleKeys.app_ocr_engines_new_engine_type_title.tr(),
+            t.app.ocr_engines_new.engine_type.title,
           ),
           children: [
             ListTile(
               leading: _type == null ? null : OcrEngineIcon(_type!),
               title: _type == null
-                  ? Text(LocaleKeys.please_choose.tr())
-                  : Text('ocr_engine.$_type'.tr()),
+                  ? Text(t.please_choose)
+                  : Text('ocr_engine.$_type'),
               trailing: widget.editable ? const ListTileChevron() : null,
               onTap: widget.editable
                   ? () async {
@@ -128,7 +127,7 @@ class _OcrEnginesNewOrEditPageState extends State<OcrEnginesNewOrEditPage> {
         if (widget.editable && _type != null)
           ListSection(
             header: Text(
-              LocaleKeys.app_ocr_engines_new_option_title.tr(),
+              t.app.ocr_engines_new.option.title,
             ),
             children: [
               for (var optionKey in _engineOptionKeys)
@@ -155,8 +154,8 @@ class _OcrEnginesNewOrEditPageState extends State<OcrEnginesNewOrEditPage> {
               ListTile(
                 title: Center(
                   child: Text(
-                    LocaleKeys.delete.tr(),
-                    style: const TextStyle(color: ReflectColors.red),
+                    t.delete,
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ),
                 onTap: () {
@@ -174,9 +173,9 @@ class _OcrEnginesNewOrEditPageState extends State<OcrEnginesNewOrEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      body: _buildBody(context),
+    return PageScaffold(
+      navigationBar: _buildAppBar(context),
+      child: _buildBody(context),
     );
   }
 }

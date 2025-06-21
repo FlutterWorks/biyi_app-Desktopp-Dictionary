@@ -1,11 +1,9 @@
-import 'package:biyi_app/generated/locale_keys.g.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
 import 'package:biyi_app/utils/utils.dart';
 import 'package:biyi_app/widgets/feature_status_icon/feature_status_icon.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/gestures.dart';
-import 'package:reflect_colors/reflect_colors.dart';
 import 'package:reflect_ui/reflect_ui.dart';
 import 'package:screen_capturer/screen_capturer.dart';
 import 'package:screen_text_extractor/screen_text_extractor.dart';
@@ -27,18 +25,20 @@ class AllowAccessListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DesignThemeData theme = DesignTheme.of(context);
     return GappedRow(
       gap: 6,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FeatureStatusIcon(supported: allowed),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: FeatureStatusIcon(supported: allowed),
+        ),
         Expanded(
           child: Wrap(
-            spacing: 30,
+            spacing: 12,
             children: [
-              Text(
-                title,
-              ),
+              Text(title),
               Text.rich(
                 TextSpan(
                   children: [
@@ -46,8 +46,7 @@ class AllowAccessListItem extends StatelessWidget {
                       children: [
                         if (onTappedTryAllow != null)
                           TextSpan(
-                            text: LocaleKeys.app_home_limited_banner_btn_allow
-                                .tr(),
+                            text: t.app.home.limited_banner_btn_allow,
                             recognizer: TapGestureRecognizer()
                               ..onTap = onTappedTryAllow,
                           ),
@@ -60,21 +59,19 @@ class AllowAccessListItem extends StatelessWidget {
                           ),
                         if (onTappedGoSettings != null)
                           TextSpan(
-                            text: LocaleKeys
-                                .app_home_limited_banner_btn_go_settings
-                                .tr(),
+                            text: t.app.home.limited_banner_btn_go_settings,
                             recognizer: TapGestureRecognizer()
                               ..onTap = onTappedGoSettings,
                           ),
                       ],
-                      style: TextStyle(
-                        color: ReflectColors.neutral.shade700,
+                      style: theme.typography.bodyMedium.copyWith(
+                        color: Colors.neutral.shade700,
                         decoration: TextDecoration.underline,
                         decorationThickness: 1.5,
-                        decorationColor: ReflectColors.neutral.shade700,
+                        decorationColor: Colors.neutral.shade700,
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
-                        height: 18 / 13,
+                        height: 20 / 13,
                       ),
                     ),
                   ],
@@ -104,17 +101,17 @@ class LimitedFunctionalityBanner extends StatelessWidget {
 
   Widget _build(BuildContext context) {
     if (_isAllowedAllAccess) return Container();
-    return Alert(
-      kind: AlertKind.warning,
-      variant: AlertVariant.filled,
+    return Banner(
+      kind: BannerKind.warning,
+      variant: BannerVariant.filled,
       icon: const Icon(FluentIcons.warning_20_regular),
       title: Text.rich(
         TextSpan(
           children: [
-            TextSpan(text: LocaleKeys.app_home_limited_banner_title.tr()),
+            TextSpan(text: t.app.home.limited_banner_title),
             WidgetSpan(
               child: Tooltip(
-                message: LocaleKeys.app_home_limited_banner_tip_help.tr(),
+                message: t.app.home.limited_banner_tip_help,
                 child: GestureDetector(
                   child: Container(
                     margin: const EdgeInsets.only(left: 4),
@@ -128,7 +125,9 @@ class LimitedFunctionalityBanner extends StatelessWidget {
                             child: Icon(
                               FluentIcons.question_circle_20_regular,
                               size: 14,
-                              color: hovered ? Colors.white70 : Colors.white,
+                              color: hovered
+                                  ? Colors.white.withOpacity(0.7)
+                                  : Colors.white,
                             ),
                           );
                         },
@@ -156,14 +155,12 @@ class LimitedFunctionalityBanner extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AllowAccessListItem(
-              title:
-                  LocaleKeys.app_home_limited_banner_text_screen_capture.tr(),
+              title: t.app.home.limited_banner_text_screen_capture,
               allowed: isAllowedScreenCaptureAccess,
               onTappedTryAllow: () {
                 ScreenCapturer.instance.requestAccess();
                 BotToast.showText(
-                  text: LocaleKeys.app_home_limited_banner_msg_allow_access_tip
-                      .tr(),
+                  text: t.app.home.limited_banner_msg_allow_access_tip,
                   align: Alignment.center,
                   duration: const Duration(seconds: 5),
                 );
@@ -175,14 +172,12 @@ class LimitedFunctionalityBanner extends StatelessWidget {
               },
             ),
             AllowAccessListItem(
-              title:
-                  LocaleKeys.app_home_limited_banner_text_screen_selection.tr(),
+              title: t.app.home.limited_banner_text_screen_selection,
               allowed: isAllowedScreenSelectionAccess,
               onTappedTryAllow: () {
                 screenTextExtractor.requestAccess();
                 BotToast.showText(
-                  text: LocaleKeys.app_home_limited_banner_msg_allow_access_tip
-                      .tr(),
+                  text: t.app.home.limited_banner_msg_allow_access_tip,
                   align: Alignment.center,
                   duration: const Duration(seconds: 5),
                 );
@@ -197,15 +192,12 @@ class LimitedFunctionalityBanner extends StatelessWidget {
         ),
       ),
       actions: [
-        Theme(
-          data: Theme.of(context).copyWith(brightness: Brightness.light),
-          child: Button(
-            kind: ButtonKind.secondary,
-            variant: ButtonVariant.tinted,
-            onPressed: onTappedRecheckIsAllowedAllAccess,
-            child: Text(
-              LocaleKeys.app_home_limited_banner_btn_check_again.tr(),
-            ),
+        Button(
+          kind: ButtonKind.secondary,
+          variant: ButtonVariant.tinted,
+          onPressed: onTappedRecheckIsAllowedAllAccess,
+          child: Text(
+            t.app.home.limited_banner_btn_check_again,
           ),
         ),
         Expanded(child: Container()),

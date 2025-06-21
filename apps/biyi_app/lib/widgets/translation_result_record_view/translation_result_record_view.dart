@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:biyi_app/generated/locale_keys.g.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
 import 'package:biyi_app/models/models.dart';
 import 'package:biyi_app/widgets/translation_result_record_view/translation_engine_tag.dart';
 import 'package:biyi_app/widgets/translation_result_record_view/word_image_view.dart';
@@ -9,11 +9,9 @@ import 'package:biyi_app/widgets/translation_result_record_view/word_tag_view.da
 import 'package:biyi_app/widgets/translation_result_record_view/word_translation_view.dart';
 import 'package:biyi_app/widgets/widgets.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:reflect_colors/reflect_colors.dart';
 import 'package:reflect_ui/reflect_ui.dart';
 import 'package:uni_translate_client/uni_translate_client.dart';
 
@@ -95,14 +93,14 @@ class TranslationResultRecordView extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: SelectableText(
         error.message,
-        style: const TextStyle(color: ReflectColors.red),
+        style: const TextStyle(color: Colors.red),
         selectionHeightStyle: ui.BoxHeightStyle.max,
       ),
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    final DesignThemeData theme = DesignTheme.of(context);
 
     // String? word;
     List<TextTranslation>? translations; // 翻译
@@ -143,7 +141,7 @@ class TranslationResultRecordView extends StatelessWidget {
           if (doubleClickCopyResult) {
             Clipboard.setData(ClipboardData(text: textTranslation.text));
             BotToast.showText(
-              text: LocaleKeys.copied.tr(),
+              text: t.copied,
               align: Alignment.center,
             );
           }
@@ -170,7 +168,7 @@ class TranslationResultRecordView extends StatelessWidget {
                   ),
               ],
             ),
-            style: textTheme.bodyMedium!.copyWith(
+            style: theme.typography.bodyMedium.copyWith(
               height: 1.4,
             ),
             selectionHeightStyle: ui.BoxHeightStyle.max,
@@ -236,7 +234,7 @@ class TranslationResultRecordView extends StatelessWidget {
                       ),
                   ],
                 ),
-                style: textTheme.bodyMedium!.copyWith(
+                style: theme.typography.bodyMedium.copyWith(
                   height: 1.5,
                 ),
                 selectionHeightStyle: ui.BoxHeightStyle.max,
@@ -258,8 +256,8 @@ class TranslationResultRecordView extends StatelessWidget {
                           for (var tenseValue in (tenses[i].values ?? []))
                             TextSpan(
                               text: ' $tenseValue ',
-                              style: textTheme.bodyMedium!.copyWith(
-                                color: Theme.of(context).primaryColor,
+                              style: theme.typography.bodyMedium.copyWith(
+                                color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.w500,
                               ),
                               recognizer: TapGestureRecognizer()
@@ -272,7 +270,7 @@ class TranslationResultRecordView extends StatelessWidget {
                       ),
                   ],
                 ),
-                style: textTheme.bodyMedium!.copyWith(
+                style: theme.typography.bodyMedium.copyWith(
                   height: 1.5,
                 ),
                 selectionHeightStyle: ui.BoxHeightStyle.max,

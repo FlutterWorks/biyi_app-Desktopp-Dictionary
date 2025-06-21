@@ -30,31 +30,20 @@ class AvailableLanguageSelector extends StatelessWidget {
           for (String supportedLanguage in kSupportedLanguages)
             Container(
               margin: EdgeInsets.zero,
-              height: 28,
               child: Builder(
                 builder: (_) {
                   bool isSelected = value == supportedLanguage;
-                  EdgeInsets padding = const EdgeInsets.only(left: 6, right: 6);
                   Widget child = LanguageLabel(
                     supportedLanguage,
                     flagSize: 18,
-                    style: TextStyle(
-                      color: !isSelected ? null : Colors.white,
-                    ),
                   );
-                  return isSelected
-                      ? Button(
-                          variant: ButtonVariant.filled,
-                          padding: padding,
-                          onPressed: () => onChanged(supportedLanguage),
-                          child: child,
-                        )
-                      : Button(
-                          variant: ButtonVariant.outlined,
-                          padding: padding,
-                          onPressed: () => onChanged(supportedLanguage),
-                          child: child,
-                        );
+                  return Button(
+                    variant: isSelected
+                        ? ButtonVariant.filled
+                        : ButtonVariant.outlined,
+                    onPressed: () => onChanged(supportedLanguage),
+                    child: child,
+                  );
                 },
               ),
             ),
@@ -106,7 +95,7 @@ class _TranslationTargetSelectViewState
   @override
   Widget build(BuildContext context) {
     IconThemeData iconThemeData = Theme.of(context).iconTheme;
-    TextTheme textTheme = Theme.of(context).textTheme;
+    final DesignThemeData theme = DesignTheme.of(context);
     if (widget.translationMode == TranslationMode.auto) {
       return Container();
     }
@@ -121,13 +110,15 @@ class _TranslationTargetSelectViewState
         children: [
           Container(
             margin: EdgeInsets.zero,
-            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
               children: [
                 Button(
-                  variant: ButtonVariant.transparent,
-                  padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: Row(
+                  kind: ButtonKind.secondary,
+                  variant: ButtonVariant.cleared,
+                  size: WidgetSize.large,
+                  child: GappedRow(
+                    gap: 4,
                     children: [
                       LanguageLabel(
                         widget.sourceLanguage,
@@ -135,9 +126,9 @@ class _TranslationTargetSelectViewState
                         flagBorderColor: widget.isShowSourceLanguageSelector
                             ? Theme.of(context).primaryColor
                             : null,
-                        style: textTheme.bodyMedium!.copyWith(
+                        style: theme.typography.bodyMedium.copyWith(
                           color: widget.isShowSourceLanguageSelector
-                              ? Theme.of(context).primaryColor
+                              ? theme.colorScheme.primary
                               : null,
                         ),
                       ),
@@ -155,7 +146,7 @@ class _TranslationTargetSelectViewState
                             size: 14,
                             color: widget.isShowSourceLanguageSelector
                                 ? iconThemeData.color
-                                : textTheme.bodyMedium!.color,
+                                : theme.typography.bodyMedium.color,
                           ),
                         ),
                       ),
@@ -168,8 +159,10 @@ class _TranslationTargetSelectViewState
                   },
                 ),
                 Button(
-                  variant: ButtonVariant.transparent,
+                  kind: ButtonKind.secondary,
+                  variant: ButtonVariant.cleared,
                   padding: EdgeInsets.zero,
+                  iconSize: 22,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.fastOutSlowIn,
@@ -177,10 +170,8 @@ class _TranslationTargetSelectViewState
                     transform: Matrix4.rotationZ(
                       _isRotated ? math.pi / 1 : 0,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       FluentIcons.arrow_swap_20_regular,
-                      size: 20,
-                      color: iconThemeData.color,
                     ),
                   ),
                   onPressed: () {
@@ -194,9 +185,11 @@ class _TranslationTargetSelectViewState
                   },
                 ),
                 Button(
-                  variant: ButtonVariant.transparent,
+                  kind: ButtonKind.secondary,
+                  variant: ButtonVariant.cleared,
                   padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: Row(
+                  child: GappedRow(
+                    gap: 4,
                     children: [
                       LanguageLabel(
                         widget.targetLanguage,
@@ -204,9 +197,9 @@ class _TranslationTargetSelectViewState
                         flagBorderColor: widget.isShowTargetLanguageSelector
                             ? Theme.of(context).primaryColor
                             : null,
-                        style: textTheme.bodyMedium!.copyWith(
+                        style: theme.typography.bodyMedium.copyWith(
                           color: widget.isShowTargetLanguageSelector
-                              ? Theme.of(context).primaryColor
+                              ? theme.colorScheme.primary
                               : null,
                         ),
                       ),
@@ -223,8 +216,8 @@ class _TranslationTargetSelectViewState
                             FluentIcons.chevron_down_20_regular,
                             size: 14,
                             color: widget.isShowTargetLanguageSelector
-                                ? Theme.of(context).primaryColor
-                                : textTheme.bodyMedium!.color,
+                                ? theme.colorScheme.primary
+                                : theme.typography.bodyMedium.color,
                           ),
                         ),
                       ),
@@ -241,7 +234,7 @@ class _TranslationTargetSelectViewState
           ),
           if (widget.isShowSourceLanguageSelector ||
               widget.isShowTargetLanguageSelector)
-            const Divider(),
+            const Divider(height: 1),
           if (widget.isShowSourceLanguageSelector)
             AvailableLanguageSelector(
               value: widget.sourceLanguage,

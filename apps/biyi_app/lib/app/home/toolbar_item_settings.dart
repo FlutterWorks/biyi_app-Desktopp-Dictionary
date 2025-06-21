@@ -29,12 +29,14 @@ class _ToolbarItemSettingsState extends State<ToolbarItemSettings> {
 
   @override
   Widget build(BuildContext context) {
-    final iconThemeData = Theme.of(context).iconTheme;
-    return IconButton(
-      FluentIcons.settings_20_regular,
-      variant: IconButtonVariant.transparent,
-      color: iconThemeData.color,
+    return Button(
+      kind: ButtonKind.secondary,
+      variant: ButtonVariant.cleared,
+      size: WidgetSize.large,
       onPressed: _handleClick,
+      child: const Icon(
+        FluentIcons.settings_20_regular,
+      ),
     );
   }
 }

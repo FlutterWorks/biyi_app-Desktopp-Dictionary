@@ -1,8 +1,7 @@
 import 'dart:ui';
 
-import 'package:biyi_app/generated/locale_keys.g.dart';
+import 'package:biyi_app/i18n/strings.g.dart';
 import 'package:biyi_app/models/settings_base.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:reflect_ui/reflect_ui.dart';
@@ -45,58 +44,57 @@ class TranslationInputView extends StatelessWidget {
   final bool isAddedToVocabulary = true;
 
   Widget _buildToolbarItems(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    final IconThemeData iconThemeData = Theme.of(context).iconTheme;
+    final DesignThemeData theme = DesignTheme.of(context);
     return GappedRow(
       gap: 6,
       children: [
         Tooltip(
-          message: LocaleKeys.app_home_tip_translation_mode.tr(
-            args: [
-              'translation_mode.${translationMode.name}'.tr(),
-            ],
+          message: t.app.home.tip_translation_mode(
+            mode: translationMode.displayName,
           ),
-          child: IconButton(
-            FluentIcons.target_20_regular,
-            variant: IconButtonVariant.subtle,
-            iconBuilder: (context, icon) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  Icon(
-                    icon,
-                    color: translationMode == TranslationMode.auto
-                        ? themeData.colorScheme.primary
-                        : iconThemeData.color,
-                    size: 20,
-                  ),
-                  if (translationMode == TranslationMode.auto)
-                    Positioned(
-                      bottom: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: themeData.colorScheme.primary,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        padding: const EdgeInsets.only(
-                          left: 2,
-                          right: 2,
-                          top: 1.4,
-                          bottom: 1.4,
-                        ),
-                        child: const Text(
-                          'AUTO',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 5.4,
-                            fontWeight: FontWeight.w500,
+          child: Button(
+            kind: translationMode == TranslationMode.auto
+                ? ButtonKind.primary
+                : ButtonKind.secondary,
+            variant: ButtonVariant.muted,
+            padding: const EdgeInsets.all(0),
+            iconSize: 22,
+            child: Builder(
+              builder: (context) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Icon(
+                      FluentIcons.target_20_regular,
+                    ),
+                    if (translationMode == TranslationMode.auto)
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          padding: const EdgeInsets.only(
+                            left: 2,
+                            right: 2,
+                            top: 1.4,
+                            bottom: 1.4,
+                          ),
+                          child: const Text(
+                            'AUTO',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 5.4,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
             onPressed: () {
               TranslationMode newTranslationMode =
                   translationMode == TranslationMode.auto
@@ -107,28 +105,34 @@ class TranslationInputView extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: 0,
+          width: 1,
           height: 20,
-          child: VerticalDivider(),
+          child: VerticalDivider(thickness: 1),
         ),
         Tooltip(
-          message:
-              LocaleKeys.app_home_tip_extract_text_from_screen_capture.tr(),
-          child: IconButton(
-            FluentIcons.crop_20_regular,
-            variant: IconButtonVariant.subtle,
-            iconColor: iconThemeData.color,
+          message: t.app.home.tip_extract_text_from_screen_capture,
+          child: Button(
+            kind: ButtonKind.secondary,
+            variant: ButtonVariant.muted,
+            padding: const EdgeInsets.all(0),
+            iconSize: 22,
             onPressed: onClickExtractTextFromScreenCapture,
+            child: const Icon(
+              FluentIcons.crop_20_regular,
+            ),
           ),
         ),
         Tooltip(
-          message: LocaleKeys.app_home_tip_extract_text_from_clipboard.tr(),
-          child: IconButton(
-            FluentIcons.clipboard_text_ltr_20_regular,
-            variant: IconButtonVariant.subtle,
-            iconColor: iconThemeData.color,
-            iconSize: 20,
+          message: t.app.home.tip_extract_text_from_clipboard,
+          child: Button(
+            kind: ButtonKind.secondary,
+            variant: ButtonVariant.muted,
+            padding: const EdgeInsets.all(0),
+            iconSize: 22,
             onPressed: onClickExtractTextFromClipboard,
+            child: const Icon(
+              FluentIcons.clipboard_text_ltr_20_regular,
+            ),
           ),
         ),
       ],
@@ -144,7 +148,7 @@ class TranslationInputView extends StatelessWidget {
           child: Button(
             variant: ButtonVariant.outlined,
             onPressed: onButtonTappedClear,
-            child: Text(LocaleKeys.app_home_btn_clear.tr()),
+            child: Text(t.app.home.btn_clear),
           ),
         ),
         ConstrainedBox(
@@ -152,7 +156,7 @@ class TranslationInputView extends StatelessWidget {
           child: Button(
             variant: ButtonVariant.filled,
             onPressed: onButtonTappedTrans,
-            child: Text(LocaleKeys.app_home_btn_trans.tr()),
+            child: Text(t.app.home.btn_trans),
           ),
         ),
       ],
@@ -191,7 +195,7 @@ class TranslationInputView extends StatelessWidget {
                   style: textTheme.bodyMedium?.copyWith(
                     height: 1.2,
                   ),
-                  placeholder: LocaleKeys.app_home_input_hint.tr(),
+                  placeholder: t.app.home.input_hint,
                   placeholderStyle: textTheme.bodyMedium?.copyWith(
                     color: textTheme.bodyMedium?.color?.withOpacity(0.5),
                     height: 1.2,
@@ -223,7 +227,7 @@ class TranslationInputView extends StatelessWidget {
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                LocaleKeys.app_home_text_extracting_text.tr(),
+                                t.app.home.text_extracting_text,
                                 style: TextStyle(
                                   color: textTheme.bodySmall!.color,
                                   fontSize: 13,
